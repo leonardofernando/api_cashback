@@ -1,0 +1,15 @@
+# Mypy Cache
+.mypy_cache/
+
+# Ide's
+.vscode/
+.idea/
+
+# lints
+.flake8
+
+# database
+db.sqlite3
+
+# Virtual Environment
+.venv/

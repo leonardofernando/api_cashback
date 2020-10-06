@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+
+#  db-api-cashback:
+#    container_name: db-api-cashback
+#    image: redis
+#    ports:
+#      - "6379:6379"
+#    command: redis-server --requirepass CashB4ckAp1!
+
