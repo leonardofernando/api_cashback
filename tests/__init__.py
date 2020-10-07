@@ -1,3 +1,6 @@
-from .controller import CashbackControllerTest
+from .controller import CashbackControllerTest, DealerControllerTest
 
-__all__ = ["CashbackControllerTest"]
+__all__ = [
+    "CashbackControllerTest",
+    "DealerControllerTest",
+]

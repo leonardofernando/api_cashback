@@ -1,5 +1,5 @@
 import unittest
-from app import CashbackController
+from app.controller.cashback_controller import CashbackController
 
 
 class CashbackControllerTest(unittest.TestCase):

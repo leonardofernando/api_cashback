@@ -1,20 +1,44 @@
-from app import Dealers
+from typing import Tuple
+
+from app.model.dealer import Dealer
+from app.database.sqlite import SqliteConnection
+from app.validator.fields_validator import FieldsValidator
 
 
 class DealerController:
 
-    def dealer_register(self, name: str, cpf: str, email: str, password: str) -> bool:
+    @staticmethod
+    def dealer_register(name: str, cpf: str, email: str, password: str) -> Tuple[bool, int]:
 
-        dealer = Dealers()
-        dealer.name = name
-        dealer.cpf = cpf
-        dealer.email = email
-        dealer.password = password
+        if not FieldsValidator.valid_cpf(cpf):
+            return False, 0
 
-        dealer.save()
+        if not FieldsValidator.valid_email(email):
+            return False, 0
 
-        return True
+        with SqliteConnection() as database:
 
-    def get_dealer(self, email: str, password: str) -> bool:
+            params = (name, cpf, email, password)
+            insert_id = database.insert(table=Dealer.table, columns=Dealer.colums, params=params)
+
+            if not insert_id:
+                return False, 0
+
+        return True, insert_id
+
+    @staticmethod
+    def dealer_login(email: str, password: str) -> bool:
+
+        with SqliteConnection() as database:
+
+            columns = ('email', 'password')
+            params = (email, password)
+
+            result = database.select(table=Dealer.table, columns=columns, params=params)
+
+            dealer = result.fetchone()
+
+            if not dealer:
+                return False
 
         return True

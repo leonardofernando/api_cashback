@@ -15,7 +15,8 @@
     uma API externa disponibilizada pelo Boticário.
 """
 from flask import Flask, request
-from app import DealerController
+from app.controller.dealer_controller import DealerController
+from app.controller.cashback_controller import CashbackController
 
 
 app = Flask(__name__)
@@ -31,10 +32,9 @@ def health_check():
 def dealer_register():
     """Função para cadastrar novo revendedor."""
     body = request.json
-    DealerController().dealer_register(name=body.get("nome"),
-                                       cpf=body.get("cpf"),
-                                       email=body.get("email"),
-                                       password=body.get("senha"))
+    DealerController().dealer_register(
+        name=body.get("nome"), cpf=body.get("cpf"), email=body.get("email"), password=body.get("senha")
+    )
     return "OK", 201
 
 
@@ -42,8 +42,12 @@ def dealer_register():
 def dealer_login():
     """Função para logar revendedor."""
     body = request.json
-    DealerController().get_dealer(email=body.get("email"), password=body.get("senha"))
-    return "OK", 200
+    login_status = DealerController().dealer_login(email=body.get("email"), password=body.get("senha"))
+
+    if not login_status:
+        return {"message": "Incorrect user or password! Please try again."}, 400
+
+    return {"message": "Logged with success"}, 200
 
 
 @app.route("/compra/cadastrar", methods=["POST"])
@@ -61,7 +65,8 @@ def purchase_list():
 @app.route("/cashback", methods=["GET"])
 def get_cashback():
     """Função para resgatar quantidade de cashback."""
-    return "OK", 200
+    credit = CashbackController.get_chashback_amount()
+    return {"cashback_credit": credit}, 200
 
 
 if __name__ == "__main__":

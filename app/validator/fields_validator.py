@@ -6,7 +6,7 @@ from datetime import datetime
 class FieldsValidator:
 
     @staticmethod
-    def cpf(cpf: str) -> bool:
+    def valid_cpf(cpf: str) -> bool:
 
         if not cpf:
             return False
@@ -19,17 +19,14 @@ class FieldsValidator:
         return True
 
     @staticmethod
-    def email(email: str) -> bool:
+    def valid_email(email: str) -> bool:
 
         if not email:
             return False
 
-        email_regx = r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$"
+        email_regx = r"^[\w\.\+\-]+\@[\w\.\+\-]+$"
         email_match = re.match(email_regx, email)
 
         if not email_match:
             return False
         return True
-
-    def date(self):
-        pass
