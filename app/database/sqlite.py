@@ -28,12 +28,18 @@ class SqliteConnection:
         parameters = ["?"] * len(params)
         query = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({', '.join(parameters)})"
 
-        self.execute(sql=query, params=params)
+        try:
+            self.execute(sql=query, params=params)
+        except sqlite3.Error as error:
+            return 0, {"db_error": error}
+
         self.conn.commit()
 
-        return self.cursor.lastrowid
+        return self.cursor.lastrowid, {}
 
     def select(self, table: str, columns: tuple, params: tuple = ()):
+        result = None
+        message = {}
 
         query = f"""
             SELECT {', '.join(columns)} FROM {table}  
@@ -43,8 +49,12 @@ class SqliteConnection:
             parameters = ["%s = ?" % x for x in columns]
             query += f"""WHERE {' AND '.join(parameters)}"""
 
-        result = self.execute(sql=query, params=params)
-        return result
+        try:
+            result = self.execute(sql=query, params=params)
+        except sqlite3.Error as error:
+            message = {"db_error": error}
+
+        return result, message
 
     def create_connection(self):
 

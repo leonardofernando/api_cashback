@@ -8,37 +8,31 @@ from app.validator.fields_validator import FieldsValidator
 class DealerController:
 
     @staticmethod
-    def dealer_register(name: str, cpf: str, email: str, password: str) -> Tuple[bool, int]:
-
-        if not FieldsValidator.valid_cpf(cpf):
-            return False, 0
-
-        if not FieldsValidator.valid_email(email):
-            return False, 0
+    def dealer_register(name: str, cpf: str, email: str, password: str) -> Tuple[bool, dict]:
 
         with SqliteConnection() as database:
 
             params = (name, cpf, email, password)
-            insert_id = database.insert(table=Dealer.table, columns=Dealer.colums, params=params)
+            insert_id, db_message = database.insert(table=Dealer.table, columns=Dealer.colums, params=params)
 
             if not insert_id:
-                return False, 0
+                return False, db_message
 
-        return True, insert_id
+        return True, {"mensagem": "O revendedor foi inserido com sucesso!"}
 
     @staticmethod
-    def dealer_login(email: str, password: str) -> bool:
+    def dealer_login(email: str, password: str) -> Tuple[bool, dict]:
 
         with SqliteConnection() as database:
 
             columns = ('email', 'password')
             params = (email, password)
 
-            result = database.select(table=Dealer.table, columns=columns, params=params)
+            result, message = database.select(table=Dealer.table, columns=columns, params=params)
 
-            dealer = result.fetchone()
+            dealer = result.fetchone() if result else None
 
             if not dealer:
-                return False
+                return False, message
 
-        return True
+        return True, message

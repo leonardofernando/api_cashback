@@ -1,5 +1,6 @@
-# Mypy Cache
+# Python Caches
 .mypy_cache/
+__pycache__/
 
 # Ide's
 .vscode/

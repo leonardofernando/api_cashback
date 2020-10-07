@@ -15,8 +15,10 @@
     uma API externa disponibilizada pelo Boticário.
 """
 from flask import Flask, request
+from app.validator.router_validator import RouterValidator
 from app.controller.dealer_controller import DealerController
 from app.controller.cashback_controller import CashbackController
+from app.controller.purchase_controller import PurchaseController
 
 
 app = Flask(__name__)
@@ -29,20 +31,28 @@ def health_check():
 
 
 @app.route("/revendedor/cadastrar", methods=["POST"])
+@RouterValidator.validate_dealer_register_fields
 def dealer_register():
     """Função para cadastrar novo revendedor."""
     body = request.json
-    DealerController().dealer_register(
+    is_registered, message = DealerController().dealer_register(
         name=body.get("nome"), cpf=body.get("cpf"), email=body.get("email"), password=body.get("senha")
     )
-    return "OK", 201
+
+    if not is_registered:
+        return message, 400
+
+    return message, 201
 
 
 @app.route("/revendedor/login", methods=["POST"])
+@RouterValidator.validate_dealer_login_fields
 def dealer_login():
-    """Função para logar revendedor."""
+    """Função para realizar login do revendedor."""
     body = request.json
-    login_status = DealerController().dealer_login(email=body.get("email"), password=body.get("senha"))
+    login_status = DealerController().dealer_login(
+        email=body.get("email"), password=body.get("senha")
+    )
 
     if not login_status:
         return {"message": "Incorrect user or password! Please try again."}, 400
@@ -51,15 +61,26 @@ def dealer_login():
 
 
 @app.route("/compra/cadastrar", methods=["POST"])
+@RouterValidator.validate_purchase_register_fields
 def purchase_register():
     """Função para cadastrar nova compra."""
-    return "OK", 200
+    body = request.json
+
+    is_registered, message = PurchaseController.purchase_register(
+        code=body.get('codigo'), value=body.get('valor'), date=body.get('data'), cpf=body.get('cpf')
+    )
+    if not is_registered:
+        return message, 400
+
+    return message, 201
 
 
 @app.route("/compra/listar", methods=["GET"])
 def purchase_list():
     """Função para listar compras."""
-    return "OK", 200
+    purchases_list = PurchaseController.get_purchases()
+
+    return {"purchases": purchases_list}, 200
 
 
 @app.route("/cashback", methods=["GET"])
