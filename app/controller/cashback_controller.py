@@ -1,13 +1,28 @@
 import requests
+from typing import Tuple
 
 
 class CashbackController:
 
-    def get_chashback_amount(self):
-        pass
+    @staticmethod
+    def get_chashback_amount() -> int:
+        """
+        https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=12312312323
+        """
+
+        url_api_cashbak = "https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback"
+        payload = {"cpf": 12312312323}
+        headers = {"token": "ZXPURQOARHiMc6Y0flhRC1LVlZQVFRnm"}
+
+        response = requests.get(url=url_api_cashbak, params=payload, headers=headers)
+
+        content = response.json()
+        credit = content.get("body").get("credit")
+
+        return credit
 
     @staticmethod
-    def get_cashback_percent(self, value: int):
+    def get_cashback_percent(value: int) -> Tuple[float, str]:
 
         cashback_percent = 0
         cashback_description = "0%"

@@ -1,7 +1,7 @@
 from .model import Model
 
 
-class Dealer(Model):
+class Dealers(Model):
 
     _table = "Dealer"
     _pk = "id_dealer"
