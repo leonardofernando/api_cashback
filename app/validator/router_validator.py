@@ -33,8 +33,10 @@ class RouterValidator:
             errors = {}
 
             body = request.json
-            fields = ("nome", "cpf", "email", "senha")
+            if not body:
+                return {"json": "Não foi informado o corpo do json!"}, 400
 
+            fields = ("nome", "cpf", "email", "senha")
             is_valid_fields, message = RouterValidator.required_fields(fields=fields, body=body)
             if not is_valid_fields:
                 errors.update(message)
@@ -48,7 +50,7 @@ class RouterValidator:
                 errors.update(message)
 
             if errors:
-                return errors, 400
+                return {"erros": errors}, 400
 
             return func(*args, **kwargs)
 
@@ -64,14 +66,20 @@ class RouterValidator:
             errors = {}
 
             body = request.json
-            fields = ("email", "senha")
+            if not body:
+                return {"json": "Não foi informado o corpo do json!"}, 400
 
+            fields = ("email", "senha")
             is_valid_fields, message = RouterValidator.required_fields(fields=fields, body=body)
             if not is_valid_fields:
                 errors.update(message)
 
+            is_valid_email, message = FieldsValidator.valid_email(email=body.get("email"))
+            if not is_valid_email:
+                errors.update(message)
+
             if errors:
-                return errors, 400
+                return {"erros": errors}, 400
 
             return func(*args, **kwargs)
 
@@ -87,8 +95,10 @@ class RouterValidator:
             errors = {}
 
             body = request.json
-            fields = ("codigo", "valor", "data", "cpf")
+            if not body:
+                return {"json": "Não foi informado o corpo do json!"}, 400
 
+            fields = ("codigo", "valor", "data", "cpf")
             is_valid_fields, message = RouterValidator.required_fields(fields=fields, body=body)
             if not is_valid_fields:
                 errors.update(message)
@@ -101,8 +111,12 @@ class RouterValidator:
             if not is_valid_value:
                 errors.update(message)
 
+            is_valid_data, message = FieldsValidator.valid_date(date=body.get("data"))
+            if not is_valid_data:
+                errors.update(message)
+
             if errors:
-                return errors, 400
+                return {"erros": errors}, 400
 
             return func(*args, **kwargs)
 

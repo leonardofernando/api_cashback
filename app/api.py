@@ -50,17 +50,17 @@ def dealer_register():
 def dealer_login():
     """Função para realizar login do revendedor."""
     body = request.json
-    login_status = DealerController().dealer_login(
+    login_status, message = DealerController().dealer_login(
         email=body.get("email"), password=body.get("senha")
     )
 
     if not login_status:
-        return {"message": "Incorrect user or password! Please try again."}, 400
+        return message, 401
 
-    return {"message": "Logged with success"}, 200
+    return message, 200
 
 
-@app.route("/compra/cadastrar", methods=["POST"])
+@app.route("/compras/cadastrar", methods=["POST"])
 @RouterValidator.validate_purchase_register_fields
 def purchase_register():
     """Função para cadastrar nova compra."""
@@ -75,19 +75,19 @@ def purchase_register():
     return message, 201
 
 
-@app.route("/compra/listar", methods=["GET"])
+@app.route("/compras/listar", methods=["GET"])
 def purchase_list():
     """Função para listar compras."""
     purchases_list = PurchaseController.get_purchases()
 
-    return {"purchases": purchases_list}, 200
+    return {"compras": purchases_list}, 200
 
 
 @app.route("/cashback", methods=["GET"])
 def get_cashback():
     """Função para resgatar quantidade de cashback."""
     credit = CashbackController.get_chashback_amount()
-    return {"cashback_credit": credit}, 200
+    return {"credito_cashback": credit}, 200
 
 
 if __name__ == "__main__":

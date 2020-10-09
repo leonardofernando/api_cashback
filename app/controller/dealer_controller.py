@@ -16,7 +16,7 @@ class DealerController:
             insert_id, db_message = database.insert(table=Dealer.table, columns=Dealer.colums, params=params)
 
             if not insert_id:
-                return False, db_message
+                return False, {"mensagem": "Ocorreu um erro ao inserir o revendedor!", "erro": db_message}
 
         return True, {"mensagem": "O revendedor foi inserido com sucesso!"}
 
@@ -28,11 +28,11 @@ class DealerController:
             columns = ('email', 'password')
             params = (email, password)
 
-            result, message = database.select(table=Dealer.table, columns=columns, params=params)
+            result, db_message = database.select(table=Dealer.table, columns=columns, params=params)
 
             dealer = result.fetchone() if result else None
 
             if not dealer:
-                return False, message
+                return False, {"mensagem": "Usuário ou senha incorreto!"}
 
-        return True, message
+        return True, {"mensagem": "O revendedor foi logado com sucesso!"}

@@ -38,8 +38,6 @@ class SqliteConnection:
         return self.cursor.lastrowid, {}
 
     def select(self, table: str, columns: tuple, params: tuple = ()):
-        result = None
-        message = {}
 
         query = f"""
             SELECT {', '.join(columns)} FROM {table}  
@@ -52,9 +50,10 @@ class SqliteConnection:
         try:
             result = self.execute(sql=query, params=params)
         except sqlite3.Error as error:
+            result = None
             message = {"db_error": error}
 
-        return result, message
+        return result
 
     def create_connection(self):
 
@@ -62,6 +61,7 @@ class SqliteConnection:
 
         try:
             conn = sqlite3.connect(self.db_file)
+            conn.row_factory = sqlite3.Row
         except Exception as e:
             print(e)
 

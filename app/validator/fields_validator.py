@@ -38,9 +38,19 @@ class FieldsValidator:
         if not value:
             return False, {"valor": "O valor não foi informado!"}
 
-        value_regx = r"^\d+[\,\.]\d{2}$"
-        value_match = re.match(value_regx, value)
-
-        if not value_match:
+        if not isinstance(value, int):
             return False, {"valor": "O valor não é válido!"}
+        return True, {}
+
+    @staticmethod
+    def valid_date(date: str) -> Tuple[bool, dict]:
+
+        if not date:
+            return False, {"data": "A data não foi informada!"}
+
+        try:
+            formated_date = datetime.strptime(date, "%d/%m/%Y")
+        except ValueError:
+            return False, {"data": "A data não é válida!"}
+
         return True, {}

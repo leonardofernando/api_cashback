@@ -27,7 +27,7 @@ class PurchaseController:
             if not insert_id:
                 return False, db_message
 
-        return True, db_message
+        return True, {"mensagem": "A compra foi inserida com sucesso!"}
 
     @staticmethod
     def get_purchases():
@@ -42,13 +42,18 @@ class PurchaseController:
 
                 cb_percent, cb_description = CashbackController.get_cashback_percent(value=row["value"])
 
-                row.update({
+                purchase = {
+                    "codigo": row["code"],
+                    "valor": row["value"],
+                    "data": row["date"],
+                    "cpf": row["cpf"],
+                    "status": row["status"],
                     "cashback": {
-                        "porcentagem": cb_percent,
-                        "value": cb_description,
+                        "porcentagem": cb_description,
+                        "valor": cb_percent * row["value"],
                     },
-                })
+                }
 
-                purchases_list.append(row)
+                purchases_list.append(purchase)
 
         return purchases_list

@@ -9,14 +9,14 @@ CREATE TABLE dealer (
 CREATE TABLE purchase (
     id_purchase INTEGER PRIMARY KEY,
     code INTEGER NOT NULL,
-    value TEXT NOT NULL,
+    value INTEGER NOT NULL,
     date TEXT NOT NULL,
-    cpf TEXT NOT NULL UNIQUE,
+    cpf TEXT NOT NULL,
     status TEXT DEFAULT 'Em validação'
 );
 
--- DROP TABLE dealers;
--- DROP TABLE purchases;
+-- DROP TABLE dealer;
+-- DROP TABLE purchase;
 
 SELECT * FROM dealer;
 SELECT name, cpf, email, password FROM dealer;
@@ -27,7 +27,7 @@ INSERT INTO dealer (name, cpf, email, password)
 VALUES ('Leonardo', '555.555.555-55', 'teste@teste.com', 'senha123');
 
 INSERT INTO purchase (code, value, date, cpf, status)
-VALUES (12345, '23,25', '2020-07-10 01:32:10', '555.555.555-55', 'Em validação');
+VALUES (12345, 850, '2020-07-10 01:32:10', '555.555.555-55', 'Em validação');
 
 INSERT INTO db.dealer (name,cpf,email,password) VALUES ('Leonardo', '555.555.555-55', 'teste@teste.com', 'senha123');
 
