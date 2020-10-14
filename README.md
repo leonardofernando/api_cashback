@@ -1,6 +1,6 @@
-###Desafio – “Eu revendedor ‘O Boticário’ quero ter benefícios de acordo com o meu volume de vendas”.
+### Desafio – “Eu revendedor ‘O Boticário’ quero ter benefícios de acordo com o meu volume de vendas”.
 
-#####1. PROBLEMA/OPORTUNIDADE
+##### 1. PROBLEMA/OPORTUNIDADE
 O Boticário tem várias soluções para ajudar seus revendedores(as) a gerir suas finanças e
 alavancar suas vendas. Também existem iniciativas para impulsionar as operações de vendas
 como metas gameficadas e desconto em grandes quantidades de compras.
@@ -18,8 +18,8 @@ cadastrarem suas compras e acompanhar o retorno de cashback de cada um.
 
 Vamos lá?
 
-##BACK-END
-###Requisitos back-end:
+## BACK-END
+### Requisitos back-end:
 
 - Rota para cadastrar um novo revendedor(a) exigindo no mínimo nome completo, CPF,
 e- mail e senha;
@@ -33,54 +33,54 @@ aplicado para esta compra, valor de cashback para esta compra e status;
 - Rota para exibir o acumulado de cashback até o momento, essa rota irá consumir essa
 informação de uma API externa disponibilizada pelo Boticário.
 
-##Rotas:
+## Rotas:
 [Rotas/Exemplos no Postman](BoticarioApi.postman_collection.json) - arquivo de rotas para importação
 
 ## Endpoints/Exemplos:
 
-####/healthcheck
+#### /healthcheck
 
 Rota para verificar saúde da api.
 
-######Métodos: GET
-######Headers/Authorization: Não
-######Retorno: JSON
+###### Métodos: GET
+###### Headers/Authorization: Não
+###### Retorno: JSON
         {
             "status": "OK",
         }
 
 ---
 
-####/revendedor/cadastrar
+#### /revendedor/cadastrar
 
 Rota para realizar cadastro de novo revendedor.
 
-######Métodos: POST
+###### Métodos: POST
         {
             "nome": "Leonardo Venancio",
             "cpf": "123.456.789-52",
             "email": "leonardo@teste.com",
             "senha": "senha123",
         }
-######Headers/Authorization: Não
-######Retorno: JSON
+###### Headers/Authorization: Não
+###### Retorno: JSON
         {
             "mensagem": "O revendedor foi inserido com sucesso!",
         }
 
 ---
 
-####/revendedor/login
+#### /revendedor/login
 
 Rota para realizar login de um revendedor cadastrado.
 
-######Métodos: POST
+###### Métodos: POST
         {
             "cpf": "123.456.789-52",
             "senha": "senha123",
         }
-######Headers/Authorization: Não
-######Retorno: JSON
+###### Headers/Authorization: Não
+###### Retorno: JSON
         {
             "mensagem": "O revendedor foi logado com sucesso!",
             "token": <token jwt>,
@@ -88,22 +88,22 @@ Rota para realizar login de um revendedor cadastrado.
 
 ---
 
-####/compras/cadastrar
+#### /compras/cadastrar
 
 Rota para realizar cadastro de compras realizadas.
 
-######Métodos: POST
+###### Métodos: POST
         {
             "codigo": 254513,
             "valor": 1253,
             "data": "09/10/2020",
             "cpf": "123.456.789-52",
         }
-######Headers/Authorization: Sim
+###### Headers/Authorization: Sim
         {
             "authorization": <token jwt>
         }
-######Retorno: JSON
+###### Retorno: JSON
         {
             "mensagem": "O revendedor foi logado com sucesso!",
             "token": <token jwt>,
@@ -111,16 +111,16 @@ Rota para realizar cadastro de compras realizadas.
 
 ---
 
-####/compras/listar
+#### /compras/listar
 
 Rota para visualizar lista de compras cadastradas.
 
-######Métodos: GET
-######Headers/Authorization: Sim
+###### Métodos: GET
+###### Headers/Authorization: Sim
         {
             "authorization": <token jwt>
         }
-######Retorno: JSON
+###### Retorno: JSON
         {   
             compras: [
                 {
@@ -132,13 +132,13 @@ Rota para visualizar lista de compras cadastradas.
 
 ---
 
-####/compras/listar
+#### /compras/listar
 
 Rota para visualizar quantidade de cashback acumulado.
 
-######Métodos: GET
-######Headers/Authorization: Não
-######Retorno: JSON
+###### Métodos: GET
+###### Headers/Authorization: Não
+###### Retorno: JSON
         {   
             "credito_cashback": <valor do cashback>,
         }
