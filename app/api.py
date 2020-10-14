@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route("/healthcheck", methods=["GET"])
 def health_check():
     """Função para checar a saúde da api."""
-    return "OK", 200
+    return {"status": "OK"}, 200
 
 
 @app.route("/revendedor/cadastrar", methods=["POST"])

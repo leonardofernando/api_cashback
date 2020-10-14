@@ -33,25 +33,114 @@ aplicado para esta compra, valor de cashback para esta compra e status;
 - Rota para exibir o acumulado de cashback até o momento, essa rota irá consumir essa
 informação de uma API externa disponibilizada pelo Boticário.
 
-API externa GET: https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=12312312323
+##Rotas:
+[Rotas/Exemplos no Postman](BoticarioApi.postman_collection.json) - arquivo de rotas para importação
 
-headers { token: &#39;ZXPURQOARHiMc6Y0flhRC1LVlZQVFRnm&#39; }
+## Endpoints/Exemplos:
 
-###Premissas do caso de uso:
-####- Os critérios de bonificação são:
-- Para até 1.000 reais em compras, o revendedor(a) receberá 10% de cashback do
-valor vendido no período de um mês (sobre a soma de todas as vendas);
-- Entre 1.000 e 1.500 reais em compras, o revendedor(a) receberá 15% de cashback
-do valor vendido no período de um mês (sobre a soma de todas as vendas);
-- Acima de 1.500 reais em compras, o revendedor(a) receberá 20% de cashback do
-valor vendido no período de um mês (sobre a soma de todas as vendas).
+####/healthcheck
 
-#####Requisitos técnicos obrigatórios:
-- Utilize umas destas linguagens: Nodejs, Python ou DotNet;
-- Banco de dados relacional ou não relacional;
+Rota para verificar saúde da api.
 
-#####Diferenciais (opcional):
-- Testes unitários;
-- Testes de integração;
-- Autenticação JWT;
-- Logs da aplicação
+######Métodos: GET
+######Headers/Authorization: Não
+######Retorno: JSON
+        {
+            "status": "OK",
+        }
+
+---
+
+####/revendedor/cadastrar
+
+Rota para realizar cadastro de novo revendedor.
+
+######Métodos: POST
+        {
+            "nome": "Leonardo Venancio",
+            "cpf": "123.456.789-52",
+            "email": "leonardo@teste.com",
+            "senha": "senha123",
+        }
+######Headers/Authorization: Não
+######Retorno: JSON
+        {
+            "mensagem": "O revendedor foi inserido com sucesso!",
+        }
+
+---
+
+####/revendedor/login
+
+Rota para realizar login de um revendedor cadastrado.
+
+######Métodos: POST
+        {
+            "cpf": "123.456.789-52",
+            "senha": "senha123",
+        }
+######Headers/Authorization: Não
+######Retorno: JSON
+        {
+            "mensagem": "O revendedor foi logado com sucesso!",
+            "token": <token jwt>,
+        }
+
+---
+
+####/compras/cadastrar
+
+Rota para realizar cadastro de compras realizadas.
+
+######Métodos: POST
+        {
+            "codigo": 254513,
+            "valor": 1253,
+            "data": "09/10/2020",
+            "cpf": "123.456.789-52",
+        }
+######Headers/Authorization: Sim
+        {
+            "authorization": <token jwt>
+        }
+######Retorno: JSON
+        {
+            "mensagem": "O revendedor foi logado com sucesso!",
+            "token": <token jwt>,
+        }
+
+---
+
+####/compras/listar
+
+Rota para visualizar lista de compras cadastradas.
+
+######Métodos: GET
+######Headers/Authorization: Sim
+        {
+            "authorization": <token jwt>
+        }
+######Retorno: JSON
+        {   
+            compras: [
+                {
+                    "mensagem": "O revendedor foi logado com sucesso!",
+                    "token": <token jwt>,
+                },
+            ],
+        }
+
+---
+
+####/compras/listar
+
+Rota para visualizar quantidade de cashback acumulado.
+
+######Métodos: GET
+######Headers/Authorization: Não
+######Retorno: JSON
+        {   
+            "credito_cashback": <valor do cashback>,
+        }
+
+---
