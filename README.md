@@ -1,4 +1,5 @@
-### Desafio – “Eu revendedor ‘O Boticário’ quero ter benefícios de acordo com o meu volume de vendas”.
+##Desafio Boticário - Api Cashback
+###### “Eu revendedor ‘O Boticário’ quero ter benefícios de acordo com o meu volume de vendas”.
 
 ##### 1. PROBLEMA/OPORTUNIDADE
 O Boticário tem várias soluções para ajudar seus revendedores(as) a gerir suas finanças e
