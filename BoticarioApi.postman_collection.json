@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "d569fcdd-01c1-4bb3-839d-dca8127ea2c4",
+		"name": "Boti",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=12312312323",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=12312312323",
+					"protocol": "https",
+					"host": [
+						"mdaqk8ek5j",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"v1",
+						"cashback"
+					],
+					"query": [
+						{
+							"key": "cpf",
+							"value": "12312312323"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cashback",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/cashback",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cashback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/compras/listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/compras/listar",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"compras",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/compras/cadastrar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"codigo\": 122345,\n    \"valor\": 123,\n    \"data\": \"30/03/2020\",\n    \"cpf\": \"153.509.460-54\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/compras/cadastrar",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"compras",
+						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/revendedor/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"\",\n    \"senha\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/revendedor/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"revendedor",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/revendedor/cadastrar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"Jobirouna\",\n    \"cpf\": \"123.456.123-65\",\n    \"email\": \"leonardo@teste.com\",\n    \"senha\": \"testedeapi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/revendedor/cadastrar",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"revendedor",
+						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/healthcheck",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
