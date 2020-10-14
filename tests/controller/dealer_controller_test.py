@@ -1,68 +1,82 @@
 import unittest
+import random
 from app.controller.dealer_controller import DealerController
 
 
 class DealerControllerTest(unittest.TestCase):
 
+    def setUp(self) -> None:
+        """
+        Set up dos valores dos testes.
+
+        :return:
+        """
+        self.name = "Leonardo Fernando"
+        rand_number = random.randint(10, 99)
+        self.cpf = "555.555.555-%s" % rand_number
+        self.email = "teste_%s@teste.com" % rand_number
+        self.password = "teste_api"
+
     def test_create_dealer_success(self) -> None:
+        """
+        Testa se revendedor é criado com sucesso.
 
-        name = "Leonardo Fernando"
-        cpf = "555.555.555-57"
-        email = "teste@teste.com.bb"
-        password = "passageiro"
+        :return:
+        """
 
-        insert_status, insert_id = DealerController.dealer_register(
-            name=name, cpf=cpf, email=email, password=password
+        insert_status, message = DealerController.dealer_register(
+            name=self.name, cpf=self.cpf, email=self.email, password=self.password
         )
 
         self.assertTrue(insert_status)
-        self.assertIsInstance(insert_id, int)
-        self.assertNotEqual(insert_id, 0)
-
-    def test_create_dealer_incorrect_cpf(self) -> None:
-
-        name = "Leonardo Fernando"
-        cpf = "55.55.55-57"
-        email = "teste@teste.com.bb"
-        password = "passageiro"
-
-        insert_status, insert_id = DealerController.dealer_register(
-            name=name, cpf=cpf, email=email, password=password
-        )
-
-        self.assertFalse(insert_status)
-        self.assertIsInstance(insert_id, int)
-        self.assertEqual(insert_id, 0)
-
-    def test_create_dealer_incorrect_email(self) -> None:
-
-        name = "Leonardo Fernando"
-        cpf = "555.555.555-59"
-        email = "testeteste.com.bb"
-        password = "passageiro"
-
-        insert_status, insert_id = DealerController.dealer_register(
-            name=name, cpf=cpf, email=email, password=password
-        )
-
-        self.assertFalse(insert_status)
-        self.assertIsInstance(insert_id, int)
-        self.assertEqual(insert_id, 0)
+        self.assertIsInstance(message, dict)
 
     def test_dealer_login_success(self) -> None:
+        """
+        Testa se revendedor é logado com sucesso.
 
-        email = "teste@teste.com"
+        :return:
+        """
+        DealerController.dealer_register(
+            name=self.name, cpf=self.cpf, email=self.email, password=self.password
+        )
+
+        result, message = DealerController.dealer_login(cpf=self.cpf, password=self.password)
+
+        self.assertTrue(result)
+        self.assertIsInstance(message, dict)
+
+    def test_dealer_login_invalid_cpf(self) -> None:
+        """
+        Testa se o cpf do revendedor é incorreto ao logar.
+
+        :return:
+        """
+
+        DealerController.dealer_register(
+            name=self.name, cpf=self.cpf, email=self.email, password=self.password
+        )
+
+        cpf = "888.888.888-99"
+
+        result, message = DealerController.dealer_login(cpf=cpf, password=self.password)
+
+        self.assertFalse(result)
+        self.assertIsInstance(message, dict)
+
+    def test_dealer_login_invalid_password(self) -> None:
+        """
+        Testa se senha do revendedor é incorreta ao logar.
+
+        :return:
+        """
+        DealerController.dealer_register(
+            name=self.name, cpf=self.cpf, email=self.email, password=self.password
+        )
+
         password = "senha123"
 
-        result = DealerController.dealer_login(email=email, password=password)
+        result, message = DealerController.dealer_login(cpf=self.cpf, password=password)
 
-        self.assertTrue(result)
-
-    def test_dealer_login_fail(self) -> None:
-
-        email = "teste@teste.com"
-        password = "senha"
-
-        result = DealerController.dealer_login(email=email, password=password)
-
-        self.assertTrue(result)
+        self.assertFalse(result)
+        self.assertIsInstance(message, dict)

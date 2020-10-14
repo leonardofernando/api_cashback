@@ -2,7 +2,6 @@ from typing import Tuple
 
 from app.model.purchase import Purchase
 from app.database.sqlite import SqliteConnection
-from app.validator.fields_validator import FieldsValidator
 from .cashback_controller import CashbackController
 
 
@@ -12,8 +11,17 @@ class PurchaseController:
 
     @staticmethod
     def purchase_register(
-            code: int, value: str, date: str, cpf: str
+            code: int, value: int, date: str, cpf: str
     ) -> Tuple[bool, dict]:
+        """
+        Função para cadastrar compra.
+
+        :param int code: Código da compra
+        :param int value: Valor da compra
+        :param str date: Data da compra
+        :param str cpf: Cpf do revendedor
+        :return bool, dict: Status da operação e mensagem
+        """
 
         status = "Em validação"
         if cpf in PurchaseController.FREE_CPFS:
@@ -22,7 +30,7 @@ class PurchaseController:
         with SqliteConnection() as database:
 
             params = (code, value, date, cpf, status)
-            insert_id, db_message = database.insert(table=Purchase.table, columns=Purchase.colums, params=params)
+            insert_id, db_message = database.insert(table=Purchase.table, columns=Purchase.columns, params=params)
 
             if not insert_id:
                 return False, db_message
@@ -30,15 +38,22 @@ class PurchaseController:
         return True, {"mensagem": "A compra foi inserida com sucesso!"}
 
     @staticmethod
-    def get_purchases():
+    def get_purchases() -> list:
+        """
+        Função para resgatar lista de compras cadastradas.
+
+        :return list: Lista de compras
+        """
 
         purchases_list = []
 
         with SqliteConnection() as database:
 
-            result = database.select(table=Purchase.table, columns=Purchase.colums)
+            result = database.select(model=Purchase)
 
-            for row in result.fetchall():
+            purchases_data = result.fetchall()
+
+            for row in purchases_data:
 
                 cb_percent, cb_description = CashbackController.get_cashback_percent(value=row["value"])
 

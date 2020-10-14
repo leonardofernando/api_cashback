@@ -1,19 +1,3 @@
-"""Api.
-
-[x] Rota para cadastrar um novo revendedor(a) exigindo no mínimo nome completo, CPF, e- mail e senha;
-
-[x] Rota para validar um login de um revendedor(a);
-
-[x] Rota para cadastrar uma nova compra exigindo no mínimo código, valor, data e CPF do revendedor(a).
-    Todos os cadastros são salvos com o status “Em validação” exceto quando o CPF do revendedor(a) for
-    153.509.460-56, neste caso o status é salvo como “Aprovado”;
-
-[x] Rota para listar as compras cadastradas retornando código, valor, data, % de cashback aplicado para
-    esta compra, valor de cashback para esta compra e status;
-
-[x] Rota para exibir o acumulado de cashback até o momento, essa rota irá consumir essa informação de
-    uma API externa disponibilizada pelo Boticário.
-"""
 from flask import Flask, request
 from app.validator.router_validator import RouterValidator
 from app.controller.dealer_controller import DealerController
@@ -51,7 +35,7 @@ def dealer_login():
     """Função para realizar login do revendedor."""
     body = request.json
     login_status, message = DealerController().dealer_login(
-        email=body.get("email"), password=body.get("senha")
+        cpf=body.get("cpf"), password=body.get("senha")
     )
 
     if not login_status:
@@ -61,6 +45,7 @@ def dealer_login():
 
 
 @app.route("/compras/cadastrar", methods=["POST"])
+@RouterValidator.validate_jwt
 @RouterValidator.validate_purchase_register_fields
 def purchase_register():
     """Função para cadastrar nova compra."""
@@ -76,6 +61,7 @@ def purchase_register():
 
 
 @app.route("/compras/listar", methods=["GET"])
+@RouterValidator.validate_jwt
 def purchase_list():
     """Função para listar compras."""
     purchases_list = PurchaseController.get_purchases()

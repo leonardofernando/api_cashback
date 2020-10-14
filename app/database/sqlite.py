@@ -37,21 +37,22 @@ class SqliteConnection:
 
         return self.cursor.lastrowid, {}
 
-    def select(self, table: str, columns: tuple, params: tuple = ()):
+    def select(self, model, where: tuple = (), params: tuple = (), columns: tuple = ()):
+
+        query_columns = ','.join(columns if columns else model.columns)
 
         query = f"""
-            SELECT {', '.join(columns)} FROM {table}  
+            SELECT {query_columns} FROM {model.table}  
         """
 
-        if params:
-            parameters = ["%s = ?" % x for x in columns]
+        if where and params:
+            parameters = ["%s = ?" % x for x in where]
             query += f"""WHERE {' AND '.join(parameters)}"""
 
         try:
             result = self.execute(sql=query, params=params)
         except sqlite3.Error as error:
-            result = None
-            message = {"db_error": error}
+            return None, {"db_erro": error}
 
         return result
 
@@ -62,6 +63,7 @@ class SqliteConnection:
         try:
             conn = sqlite3.connect(self.db_file)
             conn.row_factory = sqlite3.Row
+            conn.text_factory = str
         except Exception as e:
             print(e)
 

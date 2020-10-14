@@ -7,7 +7,11 @@ class CashbackController:
     @staticmethod
     def get_chashback_amount() -> int:
         """
-        https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=12312312323
+        Função para pegar resultado de cashback de api externa.
+        url de exemplo:
+            https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback?cpf=12312312323
+
+        :return int: Valor do crédito de cashback
         """
 
         url_api_cashbak = "https://mdaqk8ek5j.execute-api.us-east-1.amazonaws.com/v1/cashback"
@@ -23,6 +27,12 @@ class CashbackController:
 
     @staticmethod
     def get_cashback_percent(value: int) -> Tuple[float, str]:
+        """
+        Função para calcular porcentagem do cashback da compra.
+
+        :param int value: Valor da compra
+        :return float, str: Valor da porcentagem de cashback e descrição
+        """
 
         cashback_percent = 0
         cashback_description = "0%"

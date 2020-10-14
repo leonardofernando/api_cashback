@@ -7,9 +7,13 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: api-cashback
-    command: FLASK_APP=app/api.py flask run --host=0.0.0.0
+    environment:
+      - SQLITE_FILE=/app/db.sqlite3
     ports:
       - 9785:5000
+    networks:
+      - cashback
+#    command: FLASK_APP=api.py flask run --host=0.0.0.0
 
 networks:
   cashback:

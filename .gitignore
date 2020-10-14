@@ -9,8 +9,11 @@ __pycache__/
 # lints
 .flake8
 
+# tests
+.coverage
+
 # database
-db.sqlite3
+#db.sqlite3
 
 # Virtual Environment
 .venv/

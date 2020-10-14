@@ -1,4 +1,4 @@
 class Purchase:
 
     table = "purchase"
-    colums = ('code', 'value', 'date', 'cpf', 'status')
+    columns = ('code', 'value', 'date', 'cpf', 'status')
